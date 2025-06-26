@@ -2,41 +2,50 @@ import type { VercelRequest, VercelResponse } from '@vercel/node';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 
-// 環境変数取得
-const { ADMIN_USERNAME, ADMIN_PASSWORD_HASH, JWT_SECRET } = process.env;
+// 環境変数を安全に取得
+const {
+  ADMIN_USERNAME,
+  ADMIN_PASSWORD_HASH,
+  JWT_SECRET,
+} = process.env;
 
-// 初期チェック
+// Vercel が起動時に即座にクラッシュさせてログを残す
 if (!ADMIN_USERNAME || !ADMIN_PASSWORD_HASH || !JWT_SECRET) {
-  console.error('Missing required environment variables.');
-  throw new Error('Server misconfiguration: Missing environment variables');
+  console.error('[ConfigError] Missing required environment variables.');
+  throw new Error('Server misconfiguration: Missing required environment variables');
 }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
+  // メソッドチェック
   if (req.method !== 'POST') {
-    res.setHeader('Allow', 'POST');
+    res.setHeader('Allow', ['POST']);
     return res.status(405).json({ message: `Method ${req.method} Not Allowed` });
   }
 
-  if (req.headers['content-type'] !== 'application/json') {
+  // Content-Type チェック（セキュリティ強化）
+  const contentType = req.headers['content-type'];
+  if (!contentType?.includes('application/json')) {
     return res.status(400).json({ message: 'Invalid content type. Expected application/json.' });
   }
 
-  let username: string | undefined;
-  let password: string | undefined;
+  let username: string;
+  let password: string;
 
   try {
     const body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
-    username = body.username;
-    password = body.password;
-  } catch {
-    return res.status(400).json({ message: 'Malformed JSON in request body.' });
-  }
+    username = body?.username;
+    password = body?.password;
 
-  if (!username || !password) {
-    return res.status(400).json({ message: 'Username and password are required.' });
+    if (typeof username !== 'string' || typeof password !== 'string') {
+      throw new Error('Invalid username or password format');
+    }
+  } catch (err) {
+    console.error('[ParseError]', err);
+    return res.status(400).json({ message: 'Malformed or missing JSON in request body.' });
   }
 
   try {
+    // パスワードの照合
     const passwordMatch = await bcrypt.compare(password, ADMIN_PASSWORD_HASH);
 
     if (username === ADMIN_USERNAME && passwordMatch) {
@@ -47,7 +56,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return res.status(401).json({ message: 'Invalid credentials.' });
     }
   } catch (err) {
-    console.error('Login processing error:', err);
+    console.error('[LoginError]', err);
     return res.status(500).json({ message: 'Internal server error.' });
   }
 }
