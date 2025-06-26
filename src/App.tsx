@@ -50,18 +50,14 @@ function AppContent() {
           <nav>
             {isAuthenticated ? (
               <div className="flex items-center space-x-4">
-                <Link to="/admin/new" className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded">
+                <Link to="/admin/new" className="bg-indigo-600 hover:bg-indigo-700 !text-white font-bold py-2 px-4 rounded">
                   Create New Post
                 </Link>
                 <button onClick={logout} className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
                   Logout
                 </button>
               </div>
-            ) : (
-              <Link to="/admin/login" className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded">
-                Admin Login
-              </Link>
-            )}
+            ) : null}
           </nav>
         </div>
       </header>
