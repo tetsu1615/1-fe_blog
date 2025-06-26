@@ -4,9 +4,9 @@ import bcrypt from 'bcrypt';
 
 // IMPORTANT: In a real application, these would be securely stored environment variables
 // and the user would be fetched from a database.
-const ADMIN_USERNAME = process.env.ADMIN_USERNAME || 'admin';
+const ADMIN_USERNAME = process.env.ADMIN_USERNAME;
 const ADMIN_PASSWORD_HASH = process.env.ADMIN_PASSWORD_HASH; // Hashed password
-const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret'; // Change this to a strong, random secret
+const JWT_SECRET = process.env.JWT_SECRET;
 
 export default async function handler(request: VercelRequest, response: VercelResponse) {
   if (request.method !== 'POST') {
