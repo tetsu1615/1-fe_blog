@@ -1,6 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import jwt from 'jsonwebtoken';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 
 // 環境変数を安全に取得
 const {
@@ -46,7 +46,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   try {
     // パスワードの照合
-    const passwordMatch = await bcrypt.compare(password, ADMIN_PASSWORD_HASH);
+    const passwordMatch = await bcrypt.compare(password, ADMIN_PASSWORD_HASH as string);
 
     if (username === ADMIN_USERNAME && passwordMatch) {
       const token = jwt.sign({ username }, JWT_SECRET, { expiresIn: '1h' });
