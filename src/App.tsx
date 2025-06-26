@@ -1,13 +1,10 @@
 import { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, useParams, Link, useLocation, useNavigate } from 'react-router-dom';
-import { AnimatePresence, motion } from 'framer-motion';
+import { BrowserRouter as Router, useParams, Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import Post from './components/Post';
 import Container from './components/Container';
-import PostList from './components/PostList';
 import { usePosts } from './hooks/usePosts';
 import AnimatedRoutes from './components/AnimatedRoutes';
-import PostEditor from './components/PostEditor';
-import Login from './components/Login';
 import { AuthProvider, useAuth } from './context/AuthContext';
 
 export const PostPage: React.FC = () => {
@@ -40,20 +37,6 @@ export const PostPage: React.FC = () => {
       <Post content={postContent} date={postDate} />
     </motion.main>
   );
-};
-
-const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { isAuthenticated } = useAuth();
-  const navigate = useNavigate();
-  const location = useLocation();
-
-  useEffect(() => {
-    if (!isAuthenticated) {
-      navigate('/admin/login', { state: { from: location.pathname } });
-    }
-  }, [isAuthenticated, navigate, location]);
-
-  return isAuthenticated ? <>{children}</> : null;
 };
 
 function AppContent() {
