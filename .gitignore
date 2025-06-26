@@ -11,7 +11,6 @@ lerna-debug.log*
 .report/
 
 # Runtime data
-*.cjs
 *.mjs
 *.d.ts
 *.tsbuildinfo
