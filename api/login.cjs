@@ -52,33 +52,12 @@
 //  }
 //};
 
-module.exports = async (req, res) => {
-  if (req.method === 'OPTIONS') {
-    res.setHeader('Access-Control-Allow-Methods', 'POST');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-    return res.status(204).end();
-  }
-
+module.exports = (req, res) => {
   if (req.method !== 'POST') {
     res.setHeader('Allow', ['POST']);
     return res.status(405).json({ message: `Method ${req.method} Not Allowed` });
   }
 
-  // デバッグ用: bodyの中身を確認（あとで削除）
-  console.log('Received POST', req.body);
-
-  try {
-    const body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
-
-    const { username, password } = body;
-
-    if (username === 'admin' && password === 'password') {
-      return res.status(200).json({ token: 'dummy-token' });
-    } else {
-      return res.status(401).json({ message: 'Invalid credentials' });
-    }
-  } catch (err) {
-    console.error('Parse error:', err);
-    return res.status(400).json({ message: 'Malformed request' });
-  }
+  res.setHeader('Content-Type', 'application/json');
+  res.status(200).end(JSON.stringify({ token: 'test-token' }));
 };
