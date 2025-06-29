@@ -1,5 +1,4 @@
 {
-  "": "pls comment out \"/(.*)\" if you dev",
   "rewrites": [
     { "source": "/api/(.*)", "destination": "/api/$1" },
     { "source": "/(.*)", "destination": "/index.html" }
