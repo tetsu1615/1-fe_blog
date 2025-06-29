@@ -4,8 +4,14 @@ import './index.css'
 import App from './App.tsx'
 import { Buffer } from 'buffer';
 
+declare global {
+  interface Window {
+    Buffer: typeof Buffer;
+  }
+}
+
 // Polyfill Buffer for gray-matter
-(window as any).Buffer = Buffer;
+window.Buffer = Buffer;
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

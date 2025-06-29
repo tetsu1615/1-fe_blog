@@ -13,7 +13,7 @@ const Post: React.FC<PostProps> = ({ content, date }) => {
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
         components={{
-          h1: ({ node, ...props }) => (
+          h1: ({ ...props }) => (
             <h1 className="mb-4 font-bold" {...props}>
               {props.children}
               {date && <small className="text-sm text-gray-500 mt-1 block">{date}</small>}

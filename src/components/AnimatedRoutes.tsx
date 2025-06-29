@@ -2,10 +2,10 @@ import React from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import PostList from './PostList';
-import { PostPage } from '../App'; // Assuming PostPage is exported from App.tsx
+import { PostPage } from './PostPage';
 import PostEditor from './PostEditor';
 import Login from './Login';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 

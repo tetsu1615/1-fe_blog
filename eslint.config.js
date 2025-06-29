@@ -20,4 +20,10 @@ export default tseslint.config([
       globals: globals.browser,
     },
   },
+  {
+    files: ['api/**/*.ts'],
+    rules: {
+      '@typescript-eslint/no-unused-vars': 'off',
+    },
+  },
 ])
