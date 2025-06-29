@@ -68,8 +68,9 @@ export default async function handler(request: VercelRequest, response: VercelRe
         const newContent = matter.stringify(content, { title, date });
         fs.writeFileSync(filePath, newContent, 'utf8');
         response.status(201).json({ message: 'Post created successfully.' });
-      } catch {
-        response.status(500).json({ message: 'Error creating post.' });
+      } catch (error) {
+        console.error('Error creating post:', error);
+        response.status(500).json({ message: 'Error creating post.', error: (error as Error).message });
       }
       break;
 
