@@ -14,7 +14,7 @@ interface UsePostsResult {
 }
 
 // Dynamically import markdown files with their raw content
-const markdownFiles: Record<string, string> = import.meta.glob('../posts/*.md', { as: 'raw', eager: true });
+const markdownFiles: Record<string, string> = import.meta.glob('../posts/*.md', { query: '?raw', import: 'default', eager: true });
 
 export const usePosts = (): UsePostsResult => {
   const [posts, setPosts] = useState<PostMetaData[]>([]);
