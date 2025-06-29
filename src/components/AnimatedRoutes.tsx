@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import PostList from './PostList';
 import { PostPage } from './PostPage';
 import PostEditor from './PostEditor';
+import PostEdit from './PostEdit';
 import Login from './Login';
 import { useAuth } from '../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
@@ -42,7 +43,7 @@ const AnimatedRoutes: React.FC = () => {
         <Route path="/posts/:postId" element={<PostPage />} />
         <Route path="/admin/login" element={<Login />} />
         <Route path="/admin/new" element={<ProtectedRoute><PostEditor /></ProtectedRoute>} />
-        <Route path="/admin/edit/:postId" element={<ProtectedRoute><PostEditor /></ProtectedRoute>} />
+        <Route path="/admin/edit/:postId" element={<ProtectedRoute><PostEdit /></ProtectedRoute>} />
       </Routes>
     </AnimatePresence>
   );
